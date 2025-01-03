@@ -1,0 +1,6 @@
+screen_regions.yaml
+venv
+plots
+__pycache__
+config/
+*.log
