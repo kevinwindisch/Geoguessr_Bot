@@ -16,12 +16,9 @@ map_regions = [
     "hobart",
 ]
 
-next_round_button = "next_round_button"
-
 coords = []
 
 PRESS_KEY = "a"
-
 
 def on_press(key):
     try:
@@ -48,10 +45,6 @@ def get_coords(players=1):
             with keyboard.Listener(on_press=on_press) as keyboard_listener:
                 keyboard_listener.join(timeout=40)
 
-    regions.append(next_round_button)
-    print(f"Move the mouse to the {next_round_button} region and press 'a'.")
-    with keyboard.Listener(on_press=on_press) as keyboard_listener:
-        keyboard_listener.join(timeout=40)
 
     screen_regions = {reg: coord for reg, coord in zip(regions, coords)}
 

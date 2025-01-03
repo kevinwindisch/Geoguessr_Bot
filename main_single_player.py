@@ -20,7 +20,7 @@ def play_turn(bot: GeoBot, plot: bool = False):
     print(response.content)
 
     location = bot.extract_location_from_response(response)
-    if location is None:
+    if location is None:  
         # Second try
         response = bot.model.invoke([message])
         print(response.content)
@@ -46,8 +46,8 @@ def main(turns=5, plot=False):
     bot = GeoBot(
         screen_regions=screen_regions,
         player=1,
-        model=ChatOpenAI,  # ChatOpenAI, ChatGoogleGenerativeAI, ChatAnthropic
-        model_name="gpt-4o",   # gpt-4o, gemini-1.5-pro, claude-3-5-sonnet-20240620
+        model=ChatGoogleGenerativeAI,  # ChatOpenAI, ChatGoogleGenerativeAI, ChatAnthropic
+        model_name="gemini-1.5-flash",   # gpt-4o, gemini-1.5-flash, claude-3-5-sonnet-20240620
     )
 
     for turn in range(turns):

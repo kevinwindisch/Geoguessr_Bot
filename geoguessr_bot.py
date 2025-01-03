@@ -18,10 +18,11 @@ dotenv.load_dotenv()
 
 
 PROMPT_INSTRUCTIONS = """
-Try to predict where the image was taken.
+You are playing the game Geoguessr where you have to guess the location of an image on a map.
 First describe the relevant details in the image to do it.
-List some regions and places where it could be.
-Chose the most likely Country and City or Specific Location.
+List some regions and places where it could be. Exclude regions not covered by Google StreetView,
+including Tanzania, Saudi Arabia, Bosnia, and other countries.
+Chose the most likely Country, City, and specific street where the picture was is taken.
 At the end, in the last line a part from the previous reasoning, write the Latitude and Longitude from that guessed location
 using the following format, making sure that the coords are valid floats, without anything else and making sure to be consistent with the format:
 Lat: XX.XXXX, Lon: XX.XXXX
@@ -34,6 +35,7 @@ class GeoBot:
     def __init__(self, screen_regions, player=1, model=ChatOpenAI, model_name="gpt-4o"):
         self.player = player
         self.screen_regions = screen_regions
+        self.screen_bot_right_x, self.screen_bot_right_y = screen_regions["screen_bot_right"]
         self.screen_x, self.screen_y = screen_regions["screen_top_left"]
         self.screen_w = screen_regions["screen_bot_right"][0] - self.screen_x
         self.screen_h = screen_regions["screen_bot_right"][1] - self.screen_y
@@ -44,7 +46,6 @@ class GeoBot:
         self.map_h = screen_regions[f"map_bot_right_{player}"][1] - self.map_y
         self.minimap_xywh = (self.map_x, self.map_y, self.map_w, self.map_h)
 
-        self.next_round_button = screen_regions["next_round_button"] if player==1 else None
         self.confirm_button = screen_regions[f"confirm_button_{player}"]
 
         self.kodiak_x, self.kodiak_y = screen_regions[f"kodiak_{player}"] 
@@ -174,6 +175,7 @@ class GeoBot:
 
         # Confirming the guessed location
         pyautogui.click(self.confirm_button, duration=0.2)
+        pyautogui.moveTo(self.screen_bot_right_x, self.screen_bot_right_y, duration=0.2)
         sleep(2)
 
     

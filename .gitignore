@@ -3,4 +3,5 @@ venv
 plots
 __pycache__
 config/
+.env
 *.log
